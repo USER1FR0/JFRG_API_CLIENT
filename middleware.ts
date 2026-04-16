@@ -4,19 +4,26 @@ const PUBLIC_PATHS = ['/login', '/register'];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-
   const isPublic = PUBLIC_PATHS.some(p => pathname.startsWith(p));
+  const hasSession = request.cookies.has('session');
 
-  // Las rutas públicas no necesitan verificación
-  // Nota: el token vive en RAM del cliente, el middleware solo protege
-  // navegación directa por URL — la protección real está en los layouts cliente
-  if (isPublic) {
-    return NextResponse.next();
+  // Redirigir server-side si no hay cookie de sesión en ruta protegida
+  if (!isPublic && !hasSession) {
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  // Para rutas protegidas, Next.js middleware actúa como primera línea.
-  // La verificación real del token ocurre en AuthGuard del lado cliente.
-  return NextResponse.next();
+  const response = NextResponse.next();
+
+  // Headers de seguridad en todas las respuestas
+  response.headers.set('X-Frame-Options', 'DENY');
+  response.headers.set('X-Content-Type-Options', 'nosniff');
+  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+
+  if (process.env.NODE_ENV === 'production') {
+    response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  }
+
+  return response;
 }
 
 export const config = {

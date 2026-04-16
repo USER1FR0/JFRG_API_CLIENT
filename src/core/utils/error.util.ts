@@ -5,10 +5,10 @@ export interface AppError {
 
 const HTTP_MESSAGES: Record<number, string> = {
   400: 'Los datos enviados no son válidos.',
-  401: 'Sesión inválida o expirada. Por favor inicia sesión.',
+  401: 'Sesión inválida. Por favor verifica tus credenciales.',
   403: 'No tienes permiso para realizar esta acción.',
   404: 'El recurso solicitado no existe.',
-  409: 'Ya existe un registro con esos datos.',
+  409: 'Existe un conflicto con los datos, verifique e intente de nuevo',
   422: 'Los datos no cumplen con el formato requerido.',
   429: 'Demasiadas solicitudes. Espera un momento.',
   500: 'Error interno del servidor. Intenta más tarde.',

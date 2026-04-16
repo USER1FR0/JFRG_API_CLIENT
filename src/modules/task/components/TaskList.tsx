@@ -1,12 +1,13 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { Plus, Trash2, CheckCircle2, Circle, Loader2, AlertCircle, Flag } from 'lucide-react';
+import { Plus, Trash2, CheckCircle2, Circle, Loader2, AlertCircle, Flag, Pencil } from 'lucide-react';
 import { taskService, Task } from '../services/task.service';
 import { TaskForm } from './TaskForm';
 import { useAuth } from '@/core/hooks/useAuth';
 import { serializeError } from '@/core/utils/error.util';
 import { sanitize } from '@/core/utils/sanitize.util';
+import { TaskEditModal } from './TaskEditModal';
 
 function groupByDate(tasks: Task[]): Record<string, Task[]> {
   return tasks.reduce<Record<string, Task[]>>((acc, task) => {
@@ -26,6 +27,7 @@ export function TaskList() {
   const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
 
   const fetchTasks = useCallback(async () => {
     try {
@@ -159,6 +161,12 @@ export function TaskList() {
                     )}
 
                     <button
+                      onClick={() => setEditingTask(task)}
+                      className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity text-gray-300 hover:text-gray-600"
+                    >
+                      <Pencil size={14} />
+                    </button>
+                    <button
                       onClick={() => handleDelete(task.id)}
                       disabled={deletingId === task.id}
                       className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity
@@ -175,6 +183,16 @@ export function TaskList() {
           </div>
         ))}
       </div>
+      {editingTask && (
+        <TaskEditModal
+          task={editingTask}
+          onUpdated={(updated) => {
+            setTasks(prev => prev.map(t => t.id === updated.id ? updated : t));
+            setEditingTask(null);
+          }}
+          onCancel={() => setEditingTask(null)}
+        />
+      )}
     </div>
   );
 }

@@ -8,12 +8,13 @@ export const taskSchema = z.object({
     .string()
     .min(3, 'Mínimo 3 caracteres')
     .max(100, 'Máximo 100 caracteres')
-    .refine(safe, 'Caracteres no permitidos'),
+    .refine(safe, 'Caracteres no permitidos').refine(val => val.trim().length > 0, 'No puede contener solo espacios'),
   description: z
     .string()
     .min(3, 'Mínimo 3 caracteres')
     .max(250, 'Máximo 250 caracteres')
-    .refine(safe, 'Caracteres no permitidos'),
+    .refine(safe, 'Caracteres no permitidos')
+    .refine(val => val.trim().length > 0, 'No puede contener solo espacios'),
   priority: z.boolean(),
   completed: z.boolean().optional(),
 

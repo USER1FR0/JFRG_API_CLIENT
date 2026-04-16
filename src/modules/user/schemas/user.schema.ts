@@ -8,17 +8,20 @@ export const updateUserSchema = z.object({
     .string()
     .min(3, 'Mínimo 3 caracteres')
     .max(100, 'Máximo 100 caracteres')
-    .refine(safe, 'Caracteres no permitidos'),
+    .refine(safe, 'Caracteres no permitidos')
+    .refine(val => val.trim().length > 0, 'No puede contener solo espacios'),
   lastName: z
     .string()
     .min(3, 'Mínimo 3 caracteres')
     .max(100, 'Máximo 100 caracteres')
-    .refine(safe, 'Caracteres no permitidos'),
+    .refine(safe, 'Caracteres no permitidos')
+    .refine(val => val.trim().length > 0, 'No puede contener solo espacios'),
   username: z
     .string()
     .min(3, 'Mínimo 3 caracteres')
     .max(100, 'Máximo 100 caracteres')
-    .refine(safe, 'Caracteres no permitidos'),
+    .refine(safe, 'Caracteres no permitidos')
+    .refine(val => val.trim().length > 0, 'No puede contener solo espacios'),
   password: z
     .string()
     .min(8, 'Mínimo 8 caracteres')

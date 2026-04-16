@@ -14,3 +14,7 @@ export function containsDangerousChars(value: string): boolean {
   const dangerous = /[<>"'`;\\]|(--)|(\/\*)|(\*\/)/;
   return dangerous.test(value);
 }
+
+export function isBlankString(value: string): boolean {
+  return value.trim().length === 0;
+}

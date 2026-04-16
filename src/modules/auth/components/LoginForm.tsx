@@ -12,6 +12,7 @@ import { useAuth } from '@/core/hooks/useAuth';
 import { useLoginGuard } from '../hooks/useLoginGuard';
 import { serializeError } from '@/core/utils/error.util';
 import { setTokenAccessor, setTokenRefreshedHandler, setUnauthorizedHandler } from '@/core/http/axios.client';
+import { setSessionCookie } from '@/core/utils/session.util';
 
 export function LoginForm() {
   const { setSession, clearSession } = useAuth();
@@ -31,12 +32,6 @@ export function LoginForm() {
     try {
       const res = await authService.login(data);
 
-      // Configurar interceptores con el token y el handler de logout
-      setTokenAccessor(() => res.access_token);
-      setUnauthorizedHandler(() => {
-        clearSession();
-        router.replace('/login');
-      });
 
       setSession(res.access_token);
       // En LoginForm.tsx, después de setSession(res.access_token):
@@ -49,6 +44,7 @@ export function LoginForm() {
         setSession(newToken);
       });
       registerSuccess();
+      setSessionCookie();
       router.replace('/dashboard');
     } catch (err) {
       registerFailure();

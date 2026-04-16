@@ -2,16 +2,19 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { CheckSquare, User, LogOut, LayoutDashboard } from 'lucide-react';
+import { CheckSquare, User, LogOut, LayoutDashboard, Users, Activity} from 'lucide-react';
 import { AuthGuard } from '@/core/guards/AuthGuard';
 import { useAuth } from '@/core/hooks/useAuth';
 import { useAxiosAuth } from '@/core/hooks/useAxiosAuth';
 import { authService } from '@/modules/auth/services/auth.service';
 import { serializeError } from '@/core/utils/error.util';
+import { useEffect } from 'react';
 
 const NAV = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Inicio' },
   { href: '/tasks', icon: CheckSquare, label: 'Tareas' },
+  { href: '/users', icon: Users, label: 'Usuarios' },
+  { href: '/logs', icon: Activity, label: 'Logs' },
   { href: '/profile', icon: User, label: 'Perfil' },
 ];
 
@@ -82,6 +85,15 @@ function Sidebar() {
 
 function DashboardInner({ children }: { children: React.ReactNode }) {
   useAxiosAuth();
+  
+  useEffect(() => {
+    const handler = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = '';
+    };
+  window.addEventListener('beforeunload', handler);
+  return () => window.removeEventListener('beforeunload', handler);
+}, []);
   return (
     <div className="flex min-h-screen bg-[#fafafa]">
       <Sidebar />

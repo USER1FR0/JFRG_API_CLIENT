@@ -3,6 +3,8 @@
 import React, { createContext, useCallback, useEffect, useRef, useState } from 'react';
 import { decodeJwt, getTokenExpiresIn, JwtPayload } from '@/core/utils/jwt.util';
 import axios from 'axios';
+import { clearSessionCookie } from '@/core/utils/session.util';
+
 
 interface AuthState {
   accessToken: string | null;
@@ -35,6 +37,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const clearSession = useCallback((expired = false) => {
     if (expiryTimerRef.current) clearTimeout(expiryTimerRef.current);
+    if (typeof window !== 'undefined') {
+      clearSessionCookie();
+    }
     setState({
       accessToken: null,
       user: null,
@@ -82,7 +87,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     setSessionRef.current = setSession;
   }, [setSession]);
-  
+
   useEffect(() => {
     return () => {
       if (expiryTimerRef.current) clearTimeout(expiryTimerRef.current);

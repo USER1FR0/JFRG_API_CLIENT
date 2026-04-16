@@ -100,12 +100,16 @@ export function ProfileForm() {
         <div>
           <label className="block text-xs font-medium text-gray-600 mb-1.5">Usuario</label>
           <input
+            readOnly 
             {...register('username')}
             autoComplete="username"
-            className={`w-full px-3.5 py-2.5 rounded-xl border text-sm bg-white outline-none transition-all
+            className={`w-full px-3.5 py-2.5 rounded-xl border text-sm outline-none transition-all
               ${errors.username
                 ? 'border-red-300 focus:border-red-400 focus:ring-2 focus:ring-red-100'
-                : 'border-gray-200 focus:border-gray-400 focus:ring-2 focus:ring-gray-100'}`}
+                : 'border-gray-200 focus:border-gray-400 focus:ring-2 focus:ring-gray-100'
+              } 
+              /* Clases para el estado desactivado/lectura */
+              bg-gray-50 text-gray-400 cursor-not-allowed border-dashed opacity-75 select-none`}
           />
           {errors.username && <p className="text-xs text-red-500 mt-1">{errors.username.message}</p>}
         </div>

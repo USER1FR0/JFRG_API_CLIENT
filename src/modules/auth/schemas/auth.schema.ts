@@ -8,11 +8,13 @@ export const loginSchema = z.object({
     .string()
     .min(3, 'Mínimo 3 caracteres')
     .max(100, 'Máximo 100 caracteres')
-    .refine(noDangerousChars, 'Caracteres no permitidos'),
+    .refine(noDangerousChars, 'Caracteres no permitidos')
+    .refine(val => val.trim().length > 0, 'No puede contener solo espacios'),
   password: z
     .string()
     .min(8, 'Mínimo 8 caracteres')
-    .max(50, 'Máximo 50 caracteres'),
+    .max(50, 'Máximo 50 caracteres')
+    .refine(val => val.trim().length > 0, 'No puede contener solo espacios'),
 });
 
 export const registerSchema = z.object({
@@ -20,17 +22,20 @@ export const registerSchema = z.object({
     .string()
     .min(3, 'Mínimo 3 caracteres')
     .max(100, 'Máximo 100 caracteres')
-    .refine(noDangerousChars, 'Caracteres no permitidos'),
+    .refine(noDangerousChars, 'Caracteres no permitidos')
+    .refine(val => val.trim().length > 0, 'No puede contener solo espacios'),
   lastName: z
     .string()
     .min(3, 'Mínimo 3 caracteres')
     .max(100, 'Máximo 100 caracteres')
-    .refine(noDangerousChars, 'Caracteres no permitidos'),
+    .refine(noDangerousChars, 'Caracteres no permitidos')
+    .refine(val => val.trim().length > 0, 'No puede contener solo espacios'),
   username: z
     .string()
     .min(3, 'Mínimo 3 caracteres')
     .max(100, 'Máximo 100 caracteres')
-    .refine(noDangerousChars, 'Caracteres no permitidos'),
+    .refine(noDangerousChars, 'Caracteres no permitidos')
+    .refine(val => val.trim().length > 0, 'No puede contener solo espacios'),
   password: z
     .string()
     .min(8, 'Mínimo 8 caracteres')
@@ -38,7 +43,8 @@ export const registerSchema = z.object({
     .regex(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
       'Debe tener mayúscula, minúscula, número y carácter especial (@$!%*?&)'
-    ),
+    )
+    .refine(val => val.trim().length > 0, 'No puede contener solo espacios'),
 });
 
 export type LoginInput = z.infer<typeof loginSchema>;
