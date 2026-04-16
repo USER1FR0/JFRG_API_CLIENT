@@ -162,14 +162,14 @@ export function TaskList() {
 
                     <button
                       onClick={() => setEditingTask(task)}
-                      className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity text-gray-300 hover:text-gray-600"
+                      className="shrink-0 opacity-100 transition-opacity text-gray-300 hover:text-gray-600"
                     >
                       <Pencil size={14} />
                     </button>
                     <button
                       onClick={() => handleDelete(task.id)}
                       disabled={deletingId === task.id}
-                      className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity
+                      className="shrink-0 opacity-100 transition-opacity
                         text-gray-300 hover:text-red-400 disabled:opacity-50"
                     >
                       {deletingId === task.id

@@ -92,7 +92,7 @@ export function UserList() {
               </div>
 
               {!isOwn && (
-                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="flex items-center gap-1 opacity-100 transition-opacity">
                   <button
                     onClick={() => setEditingUser(u)}
                     className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-all"
